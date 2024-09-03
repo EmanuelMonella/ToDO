@@ -1,6 +1,6 @@
 from PySide6 import QtWidgets, QtCore
 from PySide6.QtGui import QStandardItem, QStandardItemModel
-from todo_grafico import Ui_ToDo
+from recursos.todo_grafico import Ui_ToDo
 
 class VentanaToDo(QtWidgets.QWidget):
     def __init__(self):
@@ -23,7 +23,7 @@ class VentanaToDo(QtWidgets.QWidget):
 
             self.modelo.appendRow([checkbox_item, tarea_item])
             self.__ui.nueva_tarea.clear()
-        
+
 
     def __eliminar_tarea(self):
         pass

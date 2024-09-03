@@ -18,7 +18,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QLabel,
     QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
     QTableView, QWidget)
-import logo_rc
+import recursos.logo_rc
 
 class Ui_ToDo(object):
     def setupUi(self, ToDo):
