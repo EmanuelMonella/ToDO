@@ -19,7 +19,6 @@ from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QLabel,
     QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
     QTableView, QWidget)
 import logo_rc
-  # Asegúrate de que este archivo esté en el mismo directorio
 
 class Ui_ToDo(object):
     def setupUi(self, ToDo):
@@ -70,6 +69,8 @@ class Ui_ToDo(object):
 
 
         self.retranslateUi(ToDo)
+        self.agregar_tarea.clicked.connect(ToDo._VentanaToDo__agregar_tarea)
+        self.eliminar_tarea.clicked.connect(ToDo._VentanaToDo__eliminar_tarea)
 
         QMetaObject.connectSlotsByName(ToDo)
     # setupUi

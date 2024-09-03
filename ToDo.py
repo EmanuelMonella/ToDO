@@ -25,6 +25,9 @@ class VentanaToDo(QtWidgets.QWidget):
             self.__ui.nueva_tarea.clear()
         
 
+    def __eliminar_tarea(self):
+        pass
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
 
