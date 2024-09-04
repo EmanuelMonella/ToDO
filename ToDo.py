@@ -8,9 +8,9 @@ class VentanaToDo(QtWidgets.QWidget):
         self.__ui = Ui_ToDo()
         self.__ui.setupUi(self)
 
-        self.modelo = QStandardItemModel()
-        self.modelo.setHorizontalHeaderLabels(['Completada', 'Tarea'])
-        self.__ui.tableView.setModel(self.modelo)
+        self.__modelo = QStandardItemModel()
+        self.__modelo.setHorizontalHeaderLabels(['Realizada', 'Tarea'])
+        self.__ui.tableView.setModel(self.__modelo)
 
     def __agregar_tarea(self):
         tarea_nueva = self.__ui.nueva_tarea.text()
@@ -19,17 +19,18 @@ class VentanaToDo(QtWidgets.QWidget):
             checkbox_item.setCheckable(True)
             checkbox_item.setCheckState(QtCore.Qt.Unchecked)
 
-            tarea_item = QStandardItem(tarea_nueva)
+            item_de_tarea = QStandardItem(tarea_nueva)
 
-            self.modelo.appendRow([checkbox_item, tarea_item])
+            self.__modelo.appendRow([checkbox_item, item_de_tarea])
             self.__ui.nueva_tarea.clear()
 
 
     def __eliminar_tarea(self):
-        pass
+        fila_seleccionada = self.__ui.tableView.currentIndex().row()
+        self.__modelo.removeRow(fila_seleccionada)
 
 if __name__ == "__main__":
-    app = QtWidgets.QApplication([])
+    app = QtWidgets.QApplication()
 
     todo = VentanaToDo()
     todo.show()
