@@ -5,8 +5,8 @@ from recursos.ventanas import VentanaToDo
 if __name__ == "__main__":
     app = QtWidgets.QApplication()
 
-    todo = VentanaToDo()
-    todo.show()
+    to_do = VentanaToDo()
+    to_do.show()
 
     app.exec()
 
