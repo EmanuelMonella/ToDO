@@ -1,6 +1,6 @@
 from PySide6 import QtWidgets, QtCore
 from PySide6.QtGui import QStandardItem, QStandardItemModel
-from todo_grafico import Ui_ToDo
+from ui.todo_grafico import Ui_ToDo
 
 class VentanaToDo(QtWidgets.QWidget):
     def __init__(self):
