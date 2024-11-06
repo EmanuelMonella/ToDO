@@ -2,7 +2,7 @@ from PySide6.QtCore import QAbstractListModel, Qt, QModelIndex
 from gestor_tareas import GestorDeTareas
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QMainWindow, QMessageBox
-from ui.todo_grafico import Ui_MainWindow
+from ui.todo_grafico import Ui_Tareas
 
 class ControladorDeTareas(QAbstractListModel):
     def __init__(self, gestor: GestorDeTareas):
@@ -52,7 +52,7 @@ class ControladorDeTareas(QAbstractListModel):
 class VentanaPrincipal(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.__ui = Ui_MainWindow()
+        self.__ui = Ui_Tareas()
         self.__ui.setupUi(self)
 
         self.__gestor = GestorDeTareas()

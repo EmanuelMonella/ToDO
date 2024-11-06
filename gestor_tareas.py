@@ -34,7 +34,7 @@ class GestorDeTareas:
                     raise ValueError("Esa tarea ya fue completada")
                 else:
                     tarea.completar()
-                    return f"Tarea completada exitosamente"
+                    return f"Tarea completada"
         raise ValueError("Esa tarea no existe")
 
     def eliminar_tarea(self, tarea_id):
