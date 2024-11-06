@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="prefijoNuevo"/>
-  <qresource prefix="prefijoNuevo">
-    <file>To_Do.png</file>
-  </qresource>
-</RCC>

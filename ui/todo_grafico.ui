@@ -1,139 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ToDo</class>
- <widget class="QWidget" name="ToDo">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>341</width>
-    <height>286</height>
+    <width>300</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ToDo Loco</string>
+   <string>MainWindow</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: rgb(26, 95, 180);</string>
-  </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="4" column="2">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="0" colspan="4">
-    <widget class="QLineEdit" name="nueva_tarea">
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(98, 160, 234);
-</string>
-     </property>
-     <property name="placeholderText">
-      <string>Ingrese una nueva tarea</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="4">
-    <widget class="QPushButton" name="agregar_tarea">
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(153, 193, 241);</string>
-     </property>
-     <property name="text">
-      <string>Agregar tarea</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="4">
-    <widget class="QPushButton" name="eliminar_tarea">
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(153, 193, 241);</string>
-     </property>
-     <property name="text">
-      <string>Eliminar tarea</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0" rowspan="2" colspan="5">
-    <widget class="QTableView" name="tableView">
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(53, 132, 228);</string>
-     </property>
-     <attribute name="horizontalHeaderCascadingSectionResizes">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderCascadingSectionResizes">
-      <bool>false</bool>
-     </attribute>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLabel" name="logo">
-     <property name="maximumSize">
-      <size>
-       <width>50</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../Christian/To DO/logo.qrc">:/prefijoNuevo/To_Do.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-  </layout>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="boton_agregar">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>40</y>
+      <width>131</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Agregar tarea</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="boton_eliminar">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>320</y>
+      <width>121</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Eliminar tarea</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="boton_completar">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>320</y>
+      <width>121</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Completar tarea</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>10</y>
+      <width>131</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Listado de tareas</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="ingresar_tarea_line_edit">
+    <property name="geometry">
+     <rect>
+      <x>12</x>
+      <y>40</y>
+      <width>131</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="placeholderText">
+     <string>Ingrese la tarea</string>
+    </property>
+   </widget>
+   <widget class="QListView" name="lista">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>70</y>
+      <width>256</width>
+      <height>216</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>300</width>
+     <height>23</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources>
-  <include location="../Christian/To DO/logo.qrc"/>
- </resources>
- <connections>
-  <connection>
-   <sender>agregar_tarea</sender>
-   <signal>clicked()</signal>
-   <receiver>ToDo</receiver>
-   <slot>_VentanaToDo__agregar_tarea()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>266</x>
-     <y>18</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>337</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>eliminar_tarea</sender>
-   <signal>clicked()</signal>
-   <receiver>ToDo</receiver>
-   <slot>_VentanaToDo__eliminar_tarea()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>315</x>
-     <y>255</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>322</x>
-     <y>275</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
- <slots>
-  <slot>_VentanaToDo__agregar_tarea()</slot>
-  <slot>_VentanaToDo__eliminar_tarea()</slot>
- </slots>
+ <resources/>
+ <connections/>
 </ui>
