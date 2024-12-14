@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>ToDo 2024</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(26, 95, 180);</string>

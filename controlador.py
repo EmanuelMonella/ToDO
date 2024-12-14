@@ -1,89 +1,39 @@
-from PySide6.QtCore import QAbstractListModel, Qt, QModelIndex
-from gestor_tareas import GestorDeTareas
-from PySide6.QtGui import QFont
+from PySide6.QtCore import QModelIndex
 from PySide6.QtWidgets import QMainWindow, QMessageBox
-from ui.todo_grafico import Ui_Tareas
+from gestor_tareas import GestorDeTareas, ModeloTareas
+from ui.ventana_todo import TareasGrafico
 
-class ControladorDeTareas(QAbstractListModel):
-    def __init__(self, gestor: GestorDeTareas):
-        super().__init__()
-        self.__gestor = gestor
+class Controlador:
+    def __init__(self):
+        self.__gestor = GestorDeTareas()
+        self.__modelo = ModeloTareas(self.__gestor)
+        self.__ventana = QMainWindow()
+        self.__vista = TareasGrafico(self.__ventana)
+        self.__vista.mostrar_tareas(self.__modelo)
+        self.__vista.agregar.connect(self.agregar_tarea)
+        self.__vista.completar.connect(self.completar_tarea)
+        self.__vista.eliminar.connect(self.eliminar_tarea)
 
-    def rowCount(self, parent=QModelIndex()):
-        return self.__gestor.contar_tareas()
-
-    def data(self, index, role=Qt.DisplayRole):
-        if not index.isValid() or index.row() >= self.rowCount():
-            return None
-
-        tarea = self.__gestor.obtener_tareas()[index.row()]
-
-        if role == Qt.DisplayRole:
-            return tarea.mostrar()
-
-        elif role == Qt.FontRole and tarea.es_completada():
-            font = QFont()
-            font.setStrikeOut(True)
-            return font
-
-        return None
+    def mostrar_vista(self):
+        self.__ventana.show()
 
     def agregar_tarea(self, descripcion):
-        self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
-        self.__gestor.agregar_tarea(descripcion)
-        self.endInsertRows()
+        try:
+            self.__gestor.agregar_tarea(descripcion)
+            self.__modelo.layoutChanged.emit()
+        except ValueError as e:
+            QMessageBox.warning(self.__ventana, "Error", str(e))
 
     def completar_tarea(self, index):
-        if not index.isValid():
-            return
-        identificadores = self.__gestor.obtener_identificadores()[index.row()]
-        self.__gestor.completar_tarea(identificadores)
-        self.dataChanged.emit(index, index, [Qt.DisplayRole, Qt.FontRole])
+        try:
+            self.__gestor.completar_tarea(index)
+            self.__modelo.dataChanged.emit(QModelIndex(), QModelIndex())
+        except ValueError as e:
+            QMessageBox.warning(self.__ventana, "Error", str(e))
 
     def eliminar_tarea(self, index):
-        if not index.isValid():
-            return
-        self.beginRemoveRows(QModelIndex(), index.row(), index.row())
-        identificadores = self.__gestor.obtener_identificadores()[index.row()]
-        self.__gestor.eliminar_tarea(identificadores)
-        self.endRemoveRows()
-
-
-class VentanaPrincipal(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.__ui = Ui_Tareas()
-        self.__ui.setupUi(self)
-
-        self.__gestor = GestorDeTareas()
-        self.__modelo = ControladorDeTareas(self.__gestor)
-
-        self.__ui.lista.setModel(self.__modelo)
-
-        self.__ui.boton_agregar.clicked.connect(self.agregar_tarea)
-        self.__ui.boton_completar.clicked.connect(self.completar_tarea)
-        self.__ui.boton_eliminar.clicked.connect(self.eliminar_tarea)
-
-    def agregar_tarea(self):
-        descripcion = self.__ui.ingresar_tarea_line_edit.text().strip()
-        if descripcion:
-            try:
-                self.__modelo.agregar_tarea(descripcion)
-                self.__ui.ingresar_tarea_line_edit.clear()
-            except ValueError as e:
-                QMessageBox.warning(self, "Advertencia", str(e))
-        else:
-            QMessageBox.warning(self, "Advertencia", "La descripción de la tarea no puede estar vacía")
-
-    def completar_tarea(self):
-        index = self.__ui.lista.currentIndex()
-        if index.isValid():
-            try:
-                self.__modelo.completar_tarea(index)
-            except ValueError as e:
-                QMessageBox.warning(self, "Advertencia", "Esa tarea ya fue completada")
-
-    def eliminar_tarea(self):
-        index = self.__ui.lista.currentIndex()
-        if index.isValid():
-            self.__modelo.eliminar_tarea(index)
+        try:
+            self.__gestor.eliminar_tarea(index)
+            self.__modelo.layoutChanged.emit()
+        except ValueError as e:
+            QMessageBox.warning(self.__ventana, "Error", str(e))

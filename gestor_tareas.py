@@ -1,10 +1,12 @@
+from PySide6.QtCore import QAbstractListModel, QModelIndex, Qt
+from PySide6.QtGui import QFont
+
 class Tarea:
     def __init__(self, descripcion):
         if not descripcion.strip():
-            raise ValueError("No se puede agregar un tarea sin descripcion")
+            raise ValueError("La descripción de la tarea no puede estar vacía")
         self.__descripcion = descripcion
         self.__estado = 'pendiente'
-        self.__id = id(self)
 
     def completar(self):
         self.__estado = 'completada'
@@ -15,9 +17,6 @@ class Tarea:
     def mostrar(self):
         return self.__descripcion
 
-    def identificar(self):
-        return self.__id
-
 class GestorDeTareas:
     def __init__(self):
         self.__tareas = []
@@ -25,36 +24,45 @@ class GestorDeTareas:
     def agregar_tarea(self, descripcion):
         tarea = Tarea(descripcion)
         self.__tareas.append(tarea)
-        return tarea.identificar()
 
-    def completar_tarea(self, tarea_id):
-        for tarea in self.__tareas:
-            if tarea.identificar() == tarea_id:
-                if tarea.es_completada():
-                    raise ValueError("Esa tarea ya fue completada")
-                else:
-                    tarea.completar()
-                    return f"Tarea completada"
-        raise ValueError("Esa tarea no existe")
+    def completar_tarea(self, index):
+        try:
+            tarea = self.__tareas[index]
+            if tarea.es_completada():
+                raise ValueError("La tarea ya está completada")
+            tarea.completar()
+        except IndexError:
+            raise ValueError("Ninguna tarea para completar")
 
-    def eliminar_tarea(self, tarea_id):
-        for tarea in self.__tareas:
-            if tarea.identificar() == tarea_id:
-                self.__tareas.remove(tarea)
-                return
-        raise ValueError("Esa tarea no existe")
+    def eliminar_tarea(self, index):
+        try:
+            del self.__tareas[index]
+        except IndexError:
+            raise ValueError("Ninguna tarea para eliminar")
 
-    def tareas_pendientes(self):
-        return len([tarea for tarea in self.__tareas if not tarea.es_completada()])
-
-    def tareas_completadas(self):
-        return len([tarea for tarea in self.__tareas if tarea.es_completada()])
+    def obtener_tareas(self):
+        return self.__tareas
 
     def contar_tareas(self):
         return len(self.__tareas)
 
-    def obtener_identificadores(self):
-        return [tarea.identificar() for tarea in self.__tareas]
+class ModeloTareas(QAbstractListModel):
+    def __init__(self, gestor: GestorDeTareas):
+        super().__init__()
+        self.__gestor = gestor
 
-    def obtener_tareas(self):
-        return self.__tareas
+    def rowCount(self, parent=QModelIndex()):
+        return self.__gestor.contar_tareas()
+
+    def data(self, index, role=Qt.DisplayRole):
+        if not index.isValid() or index.row() >= self.rowCount():
+            return None
+        tarea = self.__gestor.obtener_tareas()[index.row()]
+        if role == Qt.DisplayRole:
+            return tarea.mostrar()
+        elif role == Qt.FontRole and tarea.es_completada():
+            font = QFont()
+            font.setStrikeOut(True)
+            return font
+
+        return None
