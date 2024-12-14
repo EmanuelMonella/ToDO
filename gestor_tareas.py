@@ -25,7 +25,7 @@ class GestorDeTareas(QAbstractListModel):
 
     def completar_tarea(self, index):
         if index < 0 or index >= len(self.tareas):
-            raise ValueError("Índice fuera de rango")
+            raise ValueError("No hay tareas para completr")
         tarea = self.tareas[index]
         if tarea.completada:
             raise ValueError("La tarea ya está completada")
@@ -34,7 +34,7 @@ class GestorDeTareas(QAbstractListModel):
 
     def eliminar_tarea(self, index):
         if index < 0 or index >= len(self.tareas):
-            raise ValueError("Índice fuera de rango")
+            raise ValueError("No hay tareas para eliminar")
         self.beginRemoveRows(QModelIndex(), index, index)
         del self.tareas[index]
         self.endRemoveRows()
