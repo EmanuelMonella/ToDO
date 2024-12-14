@@ -5,64 +5,51 @@ class Tarea:
     def __init__(self, descripcion):
         if not descripcion.strip():
             raise ValueError("La descripción de la tarea no puede estar vacía")
-        self.__descripcion = descripcion
-        self.__estado = 'pendiente'
+        self.descripcion = descripcion
+        self.completada = False
 
     def completar(self):
-        self.__estado = 'completada'
+        self.completada = True
 
-    def es_completada(self):
-        return self.__estado == 'completada'
-
-    def mostrar(self):
-        return self.__descripcion
-
-class GestorDeTareas:
+class GestorDeTareas(QAbstractListModel):
     def __init__(self):
-        self.__tareas = []
+        super().__init__()
+        self.tareas = []
 
     def agregar_tarea(self, descripcion):
-        tarea = Tarea(descripcion)
-        self.__tareas.append(tarea)
+        if not descripcion.strip():
+            raise ValueError("La descripción de la tarea no puede estar vacía")
+        self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
+        self.tareas.append(Tarea(descripcion))
+        self.endInsertRows()
 
     def completar_tarea(self, index):
-        try:
-            tarea = self.__tareas[index]
-            if tarea.es_completada():
-                raise ValueError("La tarea ya está completada")
-            tarea.completar()
-        except IndexError:
-            raise ValueError("Ninguna tarea para completar")
+        if index < 0 or index >= len(self.tareas):
+            raise ValueError("Índice fuera de rango")
+        tarea = self.tareas[index]
+        if tarea.completada:
+            raise ValueError("La tarea ya está completada")
+        tarea.completar()
+        self.dataChanged.emit(self.index(index), self.index(index), [Qt.DisplayRole, Qt.FontRole])
 
     def eliminar_tarea(self, index):
-        try:
-            del self.__tareas[index]
-        except IndexError:
-            raise ValueError("Ninguna tarea para eliminar")
-
-    def obtener_tareas(self):
-        return self.__tareas
-
-    def contar_tareas(self):
-        return len(self.__tareas)
-
-class ModeloTareas(QAbstractListModel):
-    def __init__(self, gestor: GestorDeTareas):
-        super().__init__()
-        self.__gestor = gestor
+        if index < 0 or index >= len(self.tareas):
+            raise ValueError("Índice fuera de rango")
+        self.beginRemoveRows(QModelIndex(), index, index)
+        del self.tareas[index]
+        self.endRemoveRows()
 
     def rowCount(self, parent=QModelIndex()):
-        return self.__gestor.contar_tareas()
+        return len(self.tareas)
 
     def data(self, index, role=Qt.DisplayRole):
         if not index.isValid() or index.row() >= self.rowCount():
             return None
-        tarea = self.__gestor.obtener_tareas()[index.row()]
+        tarea = self.tareas[index.row()]
         if role == Qt.DisplayRole:
-            return tarea.mostrar()
-        elif role == Qt.FontRole and tarea.es_completada():
+            return tarea.descripcion
+        if role == Qt.FontRole and tarea.completada:
             font = QFont()
             font.setStrikeOut(True)
             return font
-
         return None
